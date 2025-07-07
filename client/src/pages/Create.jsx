@@ -22,7 +22,7 @@ export default function Create() {
     e.preventDefault();
     try {
       let imageUrl = '';
-      if (image) {
+      if (file) {
         const formData = new FormData();
         formData.append('image', image);
         setUploading(true);
@@ -32,11 +32,17 @@ export default function Create() {
         imageUrl = uploadRes.data.url;
         setUploading(false);
       }
-      await axios.post('/api/posts', { title, content, category, image: imageUrl });
-      navigate('/');
+     const postData = {
+        title,
+        content,
+        image: imageUrl,
+      };
+
+      const newPost = await postService.createPost(postData);
+      navigate(`/post/${newPost._id}`);
     } catch (err) {
       console.error(err);
-      setUploading(false);
+      alert('Post creation failed');
     }
   };
 
