@@ -50,6 +50,7 @@ export const postService = {
     return response.data;
   },
 
+
   // Get a single post by ID or slug
   getPost: async (idOrSlug) => {
     const response = await api.get(`/posts/${idOrSlug}`);
@@ -107,7 +108,12 @@ export const authService = {
   // Register a new user
   register: async (userData) => {
     const response = await api.post('/auth/register', userData);
+    if (res.data.token) {
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+    }
     return response.data;
+
   },
 
   // Login user
